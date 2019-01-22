@@ -53,8 +53,8 @@ router.get('/pages', async (req, res) => {
  */
 router.put('/page', multer.any(), async (req, res) => {
   try {
-    const {title, body, parent} = req.body;
-    const page = await Pages.insert({title, body, parent});
+    const {title, body, parent, isPublished} = req.body;
+    const page = await Pages.insert({title, body, parent, isPublished});
 
     /** push to the orders array */
     await PagesOrder.push(parent, page._id);
@@ -80,7 +80,7 @@ router.post('/page/:id', multer.any(), async (req, res) => {
   const {id} = req.params;
 
   try {
-    const {title, body, parent, putAbovePageId} = req.body;
+    const {title, body, parent, putAbovePageId, isPublished} = req.body;
     let page = await Pages.get(id);
 
     if (page._parent !== parent) {
@@ -91,7 +91,7 @@ router.post('/page/:id', multer.any(), async (req, res) => {
       }
     }
 
-    page = await Pages.update(id, {title, body, parent});
+    page = await Pages.update(id, {title, body, parent, isPublished});
     res.json({
       success: true,
       result: page

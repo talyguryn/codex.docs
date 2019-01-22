@@ -29,6 +29,7 @@ export default class Writing {
       saveButton: null,
       parentIdSelector: null,
       putAboveIdSelector: null,
+      isPublishedCheckbox: null,
     };
   }
 
@@ -63,6 +64,7 @@ export default class Writing {
     });
     this.nodes.parentIdSelector = moduleEl.querySelector('[name="parent"]');
     this.nodes.putAboveIdSelector = moduleEl.querySelector('[name="above"]');
+    this.nodes.isPublishedCheckbox = moduleEl.querySelector('[name="isPublished"]');
   };
 
   /**
@@ -100,7 +102,8 @@ export default class Writing {
     return {
       parent: this.nodes.parentIdSelector.value,
       putAbovePageId: putAbovePageId,
-      body: editorData
+      body: editorData,
+      isPublished: this.nodes.isPublishedCheckbox.checked
     };
   }
 

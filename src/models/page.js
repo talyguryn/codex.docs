@@ -6,6 +6,7 @@ const {pages: db} = require('../utils/database/index');
  * @property {string} title - page title
  * @property {*} body - page body
  * @property {string} parent - id of parent page
+ * @property {boolean} isPublished - is published checkbox value
  */
 
 /**
@@ -21,11 +22,20 @@ class Page {
   /**
    * Find and return model of page with given id
    * @param {string} _id - page id
+   * @param {boolean} onlyPublished - only published pages
+   *
    * @returns {Promise<Page>}
    */
-  static async get(_id) {
-    const data = await db.findOne({_id});
+  static async get(_id, onlyPublished = false) {
+    const query = {
+      _id: _id
+    };
 
+    if (onlyPublished) {
+      query['isPublished'] = onlyPublished;
+    }
+
+    const data = await db.findOne(query);
     return new Page(data);
   }
 
@@ -64,11 +74,12 @@ class Page {
    * @param {PageData} pageData
    */
   set data(pageData) {
-    const {body, parent} = pageData;
+    const {body, parent, isPublished} = pageData;
 
     this.body = body || this.body;
     this.title = this.extractTitleFromBody();
     this._parent = parent || this._parent;
+    this.isPublished = isPublished || false;
   }
 
   /**
@@ -81,7 +92,8 @@ class Page {
       _id: this._id,
       title: this.title,
       body: this.body,
-      parent: this._parent
+      parent: this._parent,
+      isPublished : this.isPublished
     };
   }
 
@@ -131,6 +143,7 @@ class Page {
    */
   async save() {
     if (!this._id) {
+      console.log(this.data);
       const insertedRow = await db.insert(this.data);
 
       this._id = insertedRow._id;
