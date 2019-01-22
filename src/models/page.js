@@ -36,6 +36,7 @@ class Page {
     }
 
     const data = await db.findOne(query);
+
     return new Page(data);
   }
 
@@ -93,7 +94,7 @@ class Page {
       title: this.title,
       body: this.body,
       parent: this._parent,
-      isPublished : this.isPublished
+      isPublished: this.isPublished
     };
   }
 
