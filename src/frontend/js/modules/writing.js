@@ -27,8 +27,7 @@ export default class Writing {
     this.nodes = {
       editorWrapper: null,
       saveButton: null,
-      parentIdSelector: null,
-      putAboveIdSelector: null,
+      parentIdSelector: null
     };
   }
 
@@ -41,28 +40,35 @@ export default class Writing {
     /**
      * Create Editor
      */
-    this.nodes.editorWrapper = document.createElement('div');
+    this.nodes.editorWrapper = document.createElement('DIV');
     this.nodes.editorWrapper.id = 'codex-editor';
 
     moduleEl.appendChild(this.nodes.editorWrapper);
 
-    if (settings.page) {
-      this.page = settings.page;
-    }
+    this.page = window.savedData;
 
     this.loadEditor().then((editor) => {
       this.editor = editor;
     });
 
-    /**
-     * Activate form elements
-     */
-    this.nodes.saveButton = moduleEl.querySelector('[name="js-submit"]');
+    this.nodes.saveButton = document.createElement('SPAN');
+    this.nodes.saveButton.classList.add('writing__button', 'writing__button--save');
+    this.nodes.saveButton.innerHTML = 'Save page';
     this.nodes.saveButton.addEventListener('click', () => {
       this.saveButtonClicked();
     });
+
+    this.nodes.cancelButton = document.createElement('SPAN');
+    this.nodes.cancelButton.classList.add('writing__button', 'writing__button--cancel');
+    this.nodes.cancelButton.innerHTML = 'Cancel';
+    this.nodes.cancelButton.addEventListener('click', () => {
+      window.location.href = settings.id ? '/page/' + settings.id : '/';
+    });
+
+    moduleEl.appendChild(this.nodes.saveButton);
+    moduleEl.appendChild(this.nodes.cancelButton);
+
     this.nodes.parentIdSelector = moduleEl.querySelector('[name="parent"]');
-    this.nodes.putAboveIdSelector = moduleEl.querySelector('[name="above"]');
   };
 
   /**
@@ -91,15 +97,8 @@ export default class Writing {
       throw new Error('Entry should start with Header');
     }
 
-    /** get ordering selector value */
-    let putAbovePageId = null;
-    if (this.nodes.putAboveIdSelector) {
-      putAbovePageId = this.nodes.putAboveIdSelector.value;
-    }
-
     return {
-      parent: this.nodes.parentIdSelector.value,
-      putAbovePageId: putAbovePageId,
+      // parent: this.nodes.parentIdSelector.value,
       body: editorData
     };
   }

@@ -1,6 +1,15 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
-  {{title}}
-  <p>Welcome to {{title}}</p>
+  {% for firstLevelPage in menu %}
+    <section class="docs-aside__section">
+      <a class="docs-aside__section-title" href="/page/{{ firstLevelPage._id }}">
+        {{ firstLevelPage.title }}
+      </a>
+    </section>
+  {% endfor %}
+
+  <a class="docs-aside__add-page" href="/page/new">
+    {{ svg('plus') }} Add page
+  </a>
 {% endblock %}

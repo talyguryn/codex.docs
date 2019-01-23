@@ -1,0 +1,26 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <h1>History</h1>
+
+  {% for historyItem in pageHistory %}
+      <div class="history__item">
+        {% set timestamp = (historyItem.dtModify / 1000)|round(0, 'floor') %}
+        <span class="history__item--date">
+          {{ timestamp|date("d M G:i") }}
+        </span>
+
+        <a href="/page/{{ historyItem._id }}?version={{ historyItem.dtModify }}">{{ historyItem.title }}</a>
+
+        {#<span>#}
+          {#{{ historyItem.body.blocks|length }}#}
+        {#</span>#}
+      </div>
+  {% endfor %}
+
+  <footer>
+    <div class="footer__link">
+      <a href="/page/{{ pageId }}">Back to page</a>
+    </div>
+  </footer>
+{% endblock %}

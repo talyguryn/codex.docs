@@ -1,4 +1,4 @@
-.writing-header {
+.writing {
   display: flex;
   padding: 15px 0;
   margin-top: calc(-1 * var(--layout-padding-vertical));
@@ -8,17 +8,28 @@
   z-index: 2;
   box-shadow: 0 3px 10px #fff;
 
-  &__save {
+  &__button {
     @apply --button;
-    margin-left: auto;
+
+    &--save {
+      margin-right: 10px;
+    }
+
+    &--cancel {
+      @apply --button-secondary;
+    }
   }
 
   &__left {
     margin: auto 0;
     color: var(--color-text-second);
-
-    & span {
-      margin-right: 10px;
-    }
   }
+}
+
+.codex-editor__redactor {
+  padding-bottom: 60px;
+}
+
+.image-tool--withBackground .image-tool__image {
+  background-color: #efefef !important;
 }

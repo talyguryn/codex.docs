@@ -2,37 +2,50 @@
 
 {% block body %}
   <article class="page" data-module="page">
-    <header class="page__header">
-      <a href="/" class="page__header-nav">
-        Documentation
-      </a>
-      {% if page._parent %}
-        <a href="/page/{{ page._parent }}" class="page__header-nav">
-          Parent {{ pageParent.title }}
-        </a>
-      {% endif %}
-      <time class="page__header-time">
-        Last edit {{ (page.body.time / 1000)  | date("M d Y") }}
-        <a href="/page/edit/{{ page._id }}" class="page__header-button">
-          Edit
-        </a>
-      </time>
-    </header>
+    <a href="/page/history/{{ page._id }}" class="page__button page__button--history" title="View history">
+      {{ svg('history-clock') }}
+    </a>
+    <a href="/page/edit/{{ page._id }}?version={{ page.dtModify }}" class="page__button page__button--edit" title="Edit page">
+      {{ svg('pencil') }}
+    </a>
+
     <h1 class="page__title">
       {{ page.title }}
     </h1>
+
     <section class="page__content">
       {% for block in page.body.blocks %}
         {# Skip first header, because it is already showed as a Title #}
         {% if not (loop.first and block.type == 'header') %}
-          {% if block.type in ['paragraph', 'header', 'list', 'code'] %}
+          {% if block.type in ['paragraph', 'header', 'list', 'image', 'delimiter'] %}
             {% include './blocks/' ~ block.type ~ '.twig' with block.data %}
           {% endif %}
         {% endif %}
       {%  endfor %}
     </section>
-    <footer>
-    </footer>
-  </article>
 
+    <footer>
+      {% for menu_item in menu %}
+        {% if menu_item._id == page._id %}
+          <div class="footer__title">Read more</div>
+          {% if not loop.first %}
+            <div class="footer__link">
+              <a href="/page/{{ menu[loop.index0 - 1]._id }}">{{ menu[loop.index0 - 1].title }}</a>
+            </div>
+          {% endif %}
+
+          {% if not loop.last %}
+            <div class="footer__link">
+              <a href="/page/{{ menu[loop.index0 + 1]._id }}">{{ menu[loop.index0 + 1].title }}</a>
+            </div>
+          {% endif %}
+
+          <div class="footer__link">
+            <a href="/">List of all pages</a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </footer>
+
+  </article>
 {% endblock %}

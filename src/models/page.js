@@ -1,11 +1,12 @@
-const {pages: db} = require('../utils/database/index');
+const { db, pages: pagesDB } = require('../utils/database/index');
 
 /**
  * @typedef {Object} PageData
  * @property {string} _id - page id
  * @property {string} title - page title
  * @property {*} body - page body
- * @property {string} parent - id of parent page
+ * @property {number} dtCreate
+ * @property {number} dtModify
  */
 
 /**
@@ -15,16 +16,25 @@ const {pages: db} = require('../utils/database/index');
  * @property {string} _id - page id
  * @property {string} title - page title
  * @property {*} body - page body
- * @property {string} _parent - id of parent page
+ * @property {number} dtCreate
+ * @property {number} dtModify
  */
 class Page {
   /**
    * Find and return model of page with given id
+   *
    * @param {string} _id - page id
+   * @param {number} version
    * @returns {Promise<Page>}
    */
-  static async get(_id) {
-    const data = await db.findOne({_id});
+  static async get(_id, version) {
+    let data = await pagesDB.findOne({_id});
+
+    if (version) {
+      const docs = await Page.getPageHistory(_id, version);
+
+      data = docs[0];
+    }
 
     return new Page(data);
   }
@@ -36,9 +46,33 @@ class Page {
    * @returns {Promise<Page[]>}
    */
   static async getAll(query = {}) {
-    const docs = await db.find(query);
+    const docs = await pagesDB.find(query, null, {dtCreate: 1});
 
     return Promise.all(docs.map(doc => new Page(doc)));
+  }
+
+  /**
+   * Get changes history for target page
+   *
+   * @param {string} id
+   * @param {number} version
+   * @return {Promise<Array<Object>|Error>}
+   */
+  static async getPageHistory(id, version) {
+    const pageDB = db.getInstance(Page.dbName(id));
+    let query = {};
+
+    if (version) {
+      query.dtModify = version;
+    }
+
+    const docs = await pageDB.find(query, null, {dtModify: -1});
+
+    return Promise.all(docs.map(doc => {
+      doc._id = id;
+
+      return new Page(doc);
+    }));
   }
 
   /**
@@ -58,17 +92,22 @@ class Page {
     this.data = data;
   }
 
+  static dbName(id) {
+    return `page:${id}`;
+  }
+
   /**
    * Set PageData object fields to internal model fields
    *
    * @param {PageData} pageData
    */
   set data(pageData) {
-    const {body, parent} = pageData;
+    const {body, dtCreate, dtModify} = pageData;
 
     this.body = body || this.body;
     this.title = this.extractTitleFromBody();
-    this._parent = parent || this._parent;
+    this.dtCreate = dtCreate || this.dtCreate;
+    this.dtModify = dtModify || this.dtModify;
   }
 
   /**
@@ -81,7 +120,8 @@ class Page {
       _id: this._id,
       title: this.title,
       body: this.body,
-      parent: this._parent
+      dtCreate: this.dtCreate,
+      dtModify: this.dtModify
     };
   }
 
@@ -96,72 +136,43 @@ class Page {
   }
 
   /**
-   * Link given page as parent
-   *
-   * @param {Page} parentPage
-   */
-  set parent(parentPage) {
-    this._parent = parentPage._id;
-  }
-
-  /**
-   * Return parent page model
-   *
-   * @returns {Promise<Page>}
-   */
-  get parent() {
-    return db.findOne({_id: this._parent})
-      .then(data => new Page(data));
-  }
-
-  /**
-   * Return child pages models
-   *
-   * @returns {Promise<Page[]>}
-   */
-  get children() {
-    return db.find({parent: this._id})
-      .then(data => data.map(page => new Page(page)));
-  }
-
-  /**
    * Save or update page data in the database
    *
    * @returns {Promise<Page>}
    */
   async save() {
     if (!this._id) {
-      const insertedRow = await db.insert(this.data);
+      const insertedRow = await pagesDB.insert(this.data);
 
       this._id = insertedRow._id;
     } else {
-      await db.update({_id: this._id}, this.data);
+      await pagesDB.update({_id: this._id}, this.data);
     }
 
-    return this;
-  }
+    const pageDB = db.getInstance(Page.dbName(this._id));
 
-  /**
-   * Remove page data from the database
-   *
-   * @returns {Promise<Page>}
-   */
-  async destroy() {
-    await db.remove({_id: this._id});
-
-    delete this._id;
+    await pageDB.insert({
+      title: this.data.title,
+      body: this.data.body,
+      dtCreate: this.data.dtCreate,
+      dtModify: this.data.dtModify
+    });
 
     return this;
   }
 
-  /**
-   * Return readable page data
-   *
-   * @returns {PageData}
-   */
-  toJSON() {
-    return this.data;
-  }
+  // /**
+  //  * Remove page data from the database
+  //  *
+  //  * @returns {Promise<Page>}
+  //  */
+  // async destroy() {
+  //   await pagesDB.remove({_id: this._id});
+  //
+  //   delete this._id;
+  //
+  //   return this;
+  // }
 }
 
 module.exports = Page;

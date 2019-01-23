@@ -20,10 +20,11 @@ class Pages {
    * Find and return page model with passed id
    *
    * @param {string} id - page id
+   * @param {number} version
    * @returns {Promise<Page>}
    */
-  static async get(id) {
-    const page = await Model.get(id);
+  static async get(id, version) {
+    const page = await Model.get(id, version);
 
     if (!page._id) {
       throw new Error('Page with given id does not exist');
@@ -42,35 +43,13 @@ class Pages {
   }
 
   /**
-   * @static
-   * Return all pages without children of passed page
+   * Get changes history for target page
    *
-   * @param {string} parent - id of current page
-   * @returns {Promise<Page[]>}
+   * @param {string} id
+   * @return {Promise<Array<Object>|Error>}
    */
-  static async getAllExceptChildrens(parent) {
-    let pagesAvailable = this.removeChildren(await Pages.getAll(), parent);
-
-    return pagesAvailable.filter((item) => item !== null);
-  }
-
-  /**
-   * @static
-   * Set all children elements to null
-   *
-   * @param {Page[]} [pagesAvailable] - Array of all pages
-   * @param {string} parent - id of parent page
-   * @returns {Array<?Page>}
-   */
-  static removeChildren(pagesAvailable, parent) {
-    pagesAvailable.forEach(async (item, index) => {
-      if (item === null || item._parent !== parent) {
-        return;
-      }
-      pagesAvailable[index] = null;
-      pagesAvailable = Pages.removeChildren(pagesAvailable, item._id);
-    });
-    return pagesAvailable;
+  static async getPageHistory(id) {
+    return Model.getPageHistory(id);
   }
 
   /**
@@ -82,6 +61,9 @@ class Pages {
   static async insert(data) {
     try {
       Pages.validate(data);
+
+      data.dtCreate = Date.now();
+      data.dtModify = data.dtCreate;
 
       const page = new Model(data);
 
@@ -137,7 +119,10 @@ class Pages {
       throw new Error('Page with given id does not exist');
     }
 
+    data.dtModify = Date.now();
+
     page.data = data;
+
     return page.save();
   }
 

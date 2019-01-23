@@ -1,20 +1,16 @@
-<header class="docs-header">
-  <a href="/" class="docs-header__logo">
-    {{ config.title }}
-  </a>
-  <ul class="docs-header__menu">
-    <li>
-      <a class="docs-header__button" href="/page/new">
-        {{ svg('plus') }}
-        Add Page
-      </a>
-    </li>
-    {% for option in config.menu %}
-      <li>
-        <a href="{{option.uri}}">
-          {{ option.title }}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+<header>
+  <div class="docs-header">
+    <a href="/" class="docs-header__logo">
+      {{ config.title }}
+    </a>
+    <ul class="docs-header__menu">
+      {% for option in config.menu %}
+        <li>
+          <a href="{{option.uri}}">
+            {{ option.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 </header>

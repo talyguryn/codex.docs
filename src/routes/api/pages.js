@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer')();
 const Pages = require('../../controllers/pages');
-const PagesOrder = require('../../controllers/pagesOrder');
 
 /**
  * GET /page/:id
@@ -53,11 +52,11 @@ router.get('/pages', async (req, res) => {
  */
 router.put('/page', multer.any(), async (req, res) => {
   try {
-    const {title, body, parent} = req.body;
-    const page = await Pages.insert({title, body, parent});
+    const {title, body} = req.body;
+    const page = await Pages.insert({title, body});
 
-    /** push to the orders array */
-    await PagesOrder.push(parent, page._id);
+    // Clear cached menu
+    global.menu = null;
 
     res.json({
       success: true,
@@ -80,38 +79,11 @@ router.post('/page/:id', multer.any(), async (req, res) => {
   const {id} = req.params;
 
   try {
-    const {title, body, parent, putAbovePageId} = req.body;
-    let page = await Pages.get(id);
+    const {title, body} = req.body;
+    const page = await Pages.update(id, {title, body});
 
-    if (page._parent !== parent) {
-      await PagesOrder.move(page._parent, parent, id);
-    } else {
-      if (putAbovePageId && putAbovePageId !== '0') {
-        await PagesOrder.update(page._id, page._parent, putAbovePageId);
-      }
-    }
-
-    page = await Pages.update(id, {title, body, parent});
-    res.json({
-      success: true,
-      result: page
-    });
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-      error: err.message
-    });
-  }
-});
-
-/**
- * DELETE /page/:id
- *
- * Remove page from the database
- */
-router.delete('/page/:id', async (req, res) => {
-  try {
-    const page = await Pages.remove(req.params.id);
+    // Clear cached menu
+    global.menu = null;
 
     res.json({
       success: true,
@@ -124,5 +96,29 @@ router.delete('/page/:id', async (req, res) => {
     });
   }
 });
+
+// /**
+//  * DELETE /page/:id
+//  *
+//  * Remove page from the database
+//  */
+// router.delete('/page/:id', async (req, res) => {
+//   try {
+//     const page = await Pages.remove(req.params.id);
+//
+//     // Clear cached menu
+//     global.menu = null;
+//
+//     res.json({
+//       success: true,
+//       result: page
+//     });
+//   } catch (err) {
+//     res.status(400).json({
+//       success: false,
+//       error: err.message
+//     });
+//   }
+// });
 
 module.exports = router;

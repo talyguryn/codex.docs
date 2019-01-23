@@ -1,6 +1,25 @@
 .page {
   font-size: 16px;
   line-height: 1.6;
+  position: relative;
+
+  &__button {
+    text-decoration: none;
+    opacity: 0.2;
+    position: absolute;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &--edit {
+      margin: 11px 0 0 -40px;
+    }
+
+    &--history {
+      margin: 11px 0 0 -70px;
+    }
+  }
 
   &__header {
     display: flex;
@@ -42,6 +61,26 @@
   }
 }
 
+footer {
+  margin-top: 60px;
+}
+
+.footer {
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  &__link {
+    margin-bottom: 15px;
+
+    & a {
+      color: var(--color-text-second);
+    }
+  }
+}
+
 /**
  * Header
  * ==================
@@ -61,20 +100,6 @@
 }
 
 /**
- * Code
- * ==================
- */
-.block-code {
-  padding: 20px !important;
-  font-size: 13px;
-  border-radius: 3px;
-  border: 1px solid var(--color-line-gray);
-  font-family: Menlo,Monaco,Consolas,Courier New,monospace;
-  line-height: 1.7em;
-}
-
-
-/**
  * List
  * ==================
  */
@@ -84,3 +109,85 @@
   }
 }
 
+
+/**
+ * Image
+ */
+.block-image {
+  margin: 40px auto;
+  text-align: center;
+
+  img {
+    vertical-align: bottom;
+    max-width: 100%;
+  }
+
+  &--stretched {
+    max-width: none !important;
+    width: 100% !important;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &--bordered {
+    img {
+      border: 3px solid var(--color-text-second);
+      box-sizing: border-box;
+    }
+  }
+
+  &--backgrounded {
+    padding: 15px;
+    background: var(--color-line-gray);
+
+    &-picture {
+      max-width: 60%;
+      margin: 0 auto;
+    }
+  }
+
+  &-caption {
+    margin: 1em auto;
+    color: var(--color-text-second);
+  }
+}
+
+.block-delimiter {
+  line-height: 1.6em;
+  width: 100%;
+  text-align: center;
+
+  &::before {
+    display: inline-block;
+    content: "***";
+    font-size: 30px;
+    line-height: 65px;
+    height: 30px;
+    letter-spacing: 0.2em;
+  }
+}
+
+/**
+ * Inline Code
+ * =========================
+ */
+.inline-code {
+  background: rgba(251,241,241,0.78);
+  color: #C44545;
+  padding: 4px 6px;
+  border-radius: 2px;
+  margin: 0 2px;
+  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+  font-size: 0.9em;
+}
+
+/**
+ * Marker
+ * =========================
+ */
+.cdx-marker {
+  background: rgba(245,235,111,0.29);
+  padding: 3px 0;
+}

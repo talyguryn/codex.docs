@@ -4,17 +4,10 @@
         <a class="docs-aside__section-title" href="/page/{{ firstLevelPage._id }}">
           {{ firstLevelPage.title }}
         </a>
-        {% if firstLevelPage.children is not empty %}
-          <ul class="docs-aside__section-list">
-            {% for child in firstLevelPage.children %}
-              <li>
-                <a href="/page/{{ child._id }}">
-                  {{ child.title }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
       </section>
     {% endfor %}
+
+    <a class="docs-aside__add-page" href="/page/new">
+      {{ svg('plus') }} Add page
+    </a>
 </div>

@@ -1,9 +1,10 @@
 import CodeXEditor from 'codex.editor';
 import Header from 'codex.editor.header';
-import CodeTool from 'codex.editor.code';
 import InlineCode from 'codex.editor.inline-code';
 import Marker from 'codex.editor.marker';
-import ListTool from 'codex.editor.list';
+import List from 'codex.editor.list';
+import Image from 'codex.editor.image';
+import Delimiter from 'codex.editor.delimiter';
 
 /**
  * Class for working with Editor.js
@@ -15,6 +16,8 @@ export default class Editor {
    */
   constructor({initialData}) {
     this.editor = new CodeXEditor({
+      autofocus: true,
+
       tools: {
         header: {
           class: Header,
@@ -22,19 +25,31 @@ export default class Editor {
             placeholder: 'Enter a title'
           }
         },
-        code: CodeTool,
-        inlineCode: {
-          class: InlineCode,
-          shortcut: 'CMD+SHIFT+I'
+
+        image: {
+          class: Image,
+          config: {
+            endpoints: {
+              byFile: '/uploadImage',
+              byUrl: '/uploadImageByURL',
+            }
+          }
         },
-        Marker: {
-          class: Marker,
-          shortcut: 'CMD+SHIFT+M'
-        },
+
         list: {
-          class: ListTool,
+          class: List,
           inlineToolbar: true
-        }
+        },
+
+        delimiter: Delimiter,
+
+        inlineCode: {
+          class: InlineCode
+        },
+
+        Marker: {
+          class: Marker
+        },
       },
       data: initialData || {
         blocks: [
@@ -44,6 +59,10 @@ export default class Editor {
               text: '',
               level: 2
             }
+          },
+          {
+            type: 'paragraph',
+            data: {}
           }
         ]
       }

@@ -1,33 +1,43 @@
 :root {
   --color-text-main: #1D202B;
   --color-text-second: #7B7E89;
-  --color-line-gray: #E8E8EB;
+  --color-line-gray: #EFEFEF;
   --color-link-active: #388AE5;
 
   /**
    * Site layout sizes
    */
-  --layout-padding-horisontal: 40px;
-  --layout-padding-vertical: 40px;
+  --layout-padding-horisontal: 20px;
+  --layout-padding-vertical: 20px;
   --layout-width-aside: 200px;
   --layout-width-main-col: 650px;
 
   --button {
     display: inline-block;
-    background:  var(--color-link-active);
+    background: var(--color-link-active);
     color: #fff;
-    border-radius: 3px;
+    border-radius: 16px;
     padding: 9px 15px;
     font-size: 14px;
     line-height: 1em;
     text-decoration: none;
+    cursor: pointer;
 
     svg {
       margin: 0 0.3em 0 -0.05em;
     }
 
     &:hover {
-      background: color-mod(var(--color-link-active) blackness(+10%));
+      background: color-mod(var(--color-link-active) lightness(-10%));
+    }
+  }
+
+  --button-secondary {
+    background: var(--color-line-gray);
+    color: var(--color-text-second);
+
+    &:hover {
+      background: color-mod(var(--color-line-gray) lightness(-10%));
     }
   }
 }

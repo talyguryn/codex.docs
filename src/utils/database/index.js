@@ -1,5 +1,8 @@
-const pages = require('./pages');
-const pagesOrder = require('./pagesOrder');
+const Datastore = require('nedb');
+const config = require('../../../config');
+const path = require('path');
+
+const dbDirectory = path.resolve(__dirname, `./../../../${config.database}`);
 
 /**
  * @class Database
@@ -42,7 +45,7 @@ class Database {
    * @param {Object} projection - projection object
    * @returns {Promise<Array<Object>|Error>} - found docs or Error object
    */
-  async find(query, projection) {
+  async find(query, projection, sort = null) {
     const cbk = (resolve, reject) => (err, docs) => {
       if (err) {
         reject(err);
@@ -52,11 +55,19 @@ class Database {
     };
 
     return new Promise((resolve, reject) => {
+      let request;
+
       if (projection) {
-        this.db.find(query, projection, cbk(resolve, reject));
+        request = this.db.find(query, projection);
       } else {
-        this.db.find(query, cbk(resolve, reject));
+        request = this.db.find(query);
       }
+
+      if (sort) {
+        request.sort(sort);
+      }
+
+      request.exec(cbk(resolve, reject));
     });
   }
 
@@ -68,7 +79,7 @@ class Database {
    * @param {Object} projection - projection object
    * @returns {Promise<Object|Error>} - found doc or Error object
    */
-  async findOne(query, projection) {
+  async findOne(query, projection = {}) {
     const cbk = (resolve, reject) => (err, doc) => {
       if (err) {
         reject(err);
@@ -139,10 +150,21 @@ class Database {
       resolve(result);
     }));
   }
+
+  /**
+   * Get instance of db by name
+   *
+   * @param {string} dbName
+   * @return {Database}
+   */
+  static getInstance(dbName) {
+    const storage = new Datastore({filename: `${dbDirectory}/${dbName}.db`, autoload: true});
+
+    return new Database(storage);
+  };
 }
 
 module.exports = {
-  class: Database,
-  pages: new Database(pages),
-  pagesOrder: new Database(pagesOrder)
+  db: Database,
+  pages: Database.getInstance('pages')
 };

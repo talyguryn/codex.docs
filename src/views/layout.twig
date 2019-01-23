@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="/dist/main.css" />
+    <title>{{ config.title }}</title>
+    <link rel="stylesheet" href="/dist/main.css?v=2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
     {% include "components/header.twig" %}
     <div class="docs">
-      <aside class="docs__aside">
-        {% include "components/aside.twig" %}
-      </aside>
       <div class="docs__content">
         <div class="docs__content-inner">
           {% block body %}{% endblock %}
         </div>
       </div>
     </div>
-    <script src="/dist/main.bundle.js"></script>
+    <script src="/dist/main.bundle.js?v=1" defer></script>
   </body>
 </html>

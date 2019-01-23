@@ -1,9 +1,4 @@
 {
-  "title": "CodeX Editor &nbsp; 🤩🧦🤨",
-  "menu": [
-    "Guides",
-    "API",
-    "Plugins",
-    {"title": "Support Project", "uri": "/support"}
-  ]
+  "title": "Pages",
+  "menu": []
 }

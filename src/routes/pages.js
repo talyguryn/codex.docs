@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Pages = require('../controllers/pages');
-const PagesOrder = require('../controllers/pagesOrder');
 
 /**
  * Create new page form
@@ -20,16 +19,32 @@ router.get('/page/new', async (req, res) => {
  */
 router.get('/page/edit/:id', async (req, res, next) => {
   const pageId = req.params.id;
+  const version = parseInt(req.query.version);
 
   try {
-    const page = await Pages.get(pageId);
-    const pagesAvailable = await Pages.getAllExceptChildrens(pageId);
-    const parentsChildrenOrdered = await PagesOrder.getOrderedChildren(pagesAvailable, pageId, page._parent, true);
+    let page = await Pages.get(pageId, version);
 
     res.render('pages/form', {
-      page,
-      parentsChildrenOrdered,
-      pagesAvailable
+      page
+    });
+  } catch (error) {
+    res.status(404);
+    next(error);
+  }
+});
+
+/**
+ * Edit page form
+ */
+router.get('/page/history/:id', async (req, res, next) => {
+  const pageId = req.params.id;
+
+  try {
+    let pageHistory = await Pages.getPageHistory(pageId);
+
+    res.render('pages/history', {
+      pageId,
+      pageHistory
     });
   } catch (error) {
     res.status(404);
@@ -42,14 +57,13 @@ router.get('/page/edit/:id', async (req, res, next) => {
  */
 router.get('/page/:id', async (req, res, next) => {
   const pageId = req.params.id;
+  const version = parseInt(req.query.version);
 
   try {
-    let page = await Pages.get(pageId);
-
-    let pageParent = await page.parent;
+    let page = await Pages.get(pageId, version);
 
     res.render('pages/page', {
-      page, pageParent
+      page
     });
   } catch (error) {
     res.status(404);
