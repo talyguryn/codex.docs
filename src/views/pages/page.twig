@@ -2,12 +2,21 @@
 
 {% block body %}
   <article class="page" data-module="page">
-    <a href="/page/history/{{ page._id }}" class="page__button page__button--history" title="View history">
-      {{ svg('history-clock') }}
-    </a>
-    <a href="/page/edit/{{ page._id }}?version={{ page.dtModify }}" class="page__button page__button--edit" title="Edit page">
-      {{ svg('pencil') }}
-    </a>
+    <div class="page__header">
+      {% set timestamp = (page.dtModify / 1000)|round(0, 'floor') %}
+      <span class="page__header-time">
+        {{ timestamp|date("M d") }}
+      </span>
+
+      <span class="page__header-actions">
+        <a href="/page/history/{{ page._id }}" class="page__button page__button--history" title="View history">
+          {{ svg('history-clock') }}
+        </a>
+        <a href="/page/edit/{{ page._id }}?version={{ page.dtModify }}" class="page__button page__button--edit" title="Edit page">
+          {{ svg('pencil') }}
+        </a>
+      </span>
+    </div>
 
     <h1 class="page__title">
       {{ page.title }}
