@@ -1,6 +1,8 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
+  {% set title = page.title %}
+
   <article class="page" data-module="page">
     <div class="page__header">
       {% set date = page.dtModify ?: page.dtCreate %}

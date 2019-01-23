@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{ config.title }}</title>
-    <link rel="stylesheet" href="/dist/main.css?v=2" />
+    <title>{{ title ?: config.title }}</title>
+    <meta property="og:title" content="{{ title ?: config.title }}" />
+    <link rel="stylesheet" href="/dist/main.css?v=3" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
@@ -14,6 +15,6 @@
         </div>
       </div>
     </div>
-    <script src="/dist/main.bundle.js?v=1" defer></script>
+    <script src="/dist/main.bundle.js?v=3" defer></script>
   </body>
 </html>
