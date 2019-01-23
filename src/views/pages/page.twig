@@ -3,7 +3,8 @@
 {% block body %}
   <article class="page" data-module="page">
     <div class="page__header">
-      {% set timestamp = (page.dtModify / 1000)|round(0, 'floor') %}
+      {% set date = page.dtModify ?: page.dtCreate %}
+      {% set timestamp = (date / 1000)|round(0, 'floor') %}
       <span class="page__header-time">
         {{ timestamp|date("M d") }}
       </span>
