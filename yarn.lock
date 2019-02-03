@@ -1651,10 +1651,10 @@ codex.editor.table@^1.1.2:
   resolved "https://registry.yarnpkg.com/codex.editor.table/-/codex.editor.table-1.1.2.tgz#36fabb71ea7516046fc8675ca43341bd99f788e6"
   integrity sha512-IbP5vxC2GMPoBJJZ1+brlr6IOvH7F9uO5eYvV7d6Fk400gDPEXmcmzO26G5YxPQ7+EXHv+ca/aNR31C3nqEcig==
 
-codex.editor@^2.7.29:
-  version "2.7.29"
-  resolved "https://registry.yarnpkg.com/codex.editor/-/codex.editor-2.7.29.tgz#f60a6c6d56a6f9083c9ed24542b47de98312ccdc"
-  integrity sha512-+PXj4PKXF6EkARkrQWQvntZwxXnupaT5lWZ/3ytuHl7Mq3x/yzTQiCAeFTZlyD98Y/Hid2BcmzuW1RynA8/4/g==
+codex.editor@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/codex.editor/-/codex.editor-2.8.0.tgz#5409bf3c22ace0115d52ad14704929103b32fde5"
+  integrity sha512-6/PZNgeNfmwGTdd6nVFzT8kdcZ83CLtvCo6JiRsfXEgTW4hK3bvo7aMsbxVleTj+CxoswblTJxvuFkHxlQ42kQ==
 
 collection-visit@^1.0.0:
   version "1.0.0"
