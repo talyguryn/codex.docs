@@ -6512,10 +6512,10 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-twig@~1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/twig/-/twig-1.12.0.tgz#04450bf18ee05532ff70098f10b07227f956b8cf"
-  integrity sha512-zm5OQXb8bQDGQUPytFgjqMKHhqcz/s6pU6Nwsy+rKPhsoOOVwYeHnziiDGFzeTDiFd28M8EVkEO8we6ikcrGjQ==
+twig@~1.13.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/twig/-/twig-1.13.2.tgz#d349895a5f762b52fab71c7a373cf3153819cd7b"
+  integrity sha512-F7o4sDD2DaIj2II8VrbmDXnompOO6ESNQSh97rtJuif00v5FoUWTlkJE1ZlfeFNAwSCU9rexWsB1+3oF8jmU/Q==
   dependencies:
     locutus "^2.0.5"
     minimatch "3.0.x"
