@@ -9,7 +9,7 @@
     "build": "webpack ./src/frontend/js/app.js --o='./public/dist/[name].bundle.js' --output-library=Docs --output-public-path=/dist/ -p --watch"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "@babel/polyfill": "^7.4.3",
     "body-parser": "latest",
     "cookie-parser": "~1.4.3",
     "debug": "~4.1.0",
