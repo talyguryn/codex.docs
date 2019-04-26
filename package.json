@@ -34,7 +34,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.2",
     "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
+    "chai-http": "^4.3.0",
     "codex.editor": "^2.7.29",
     "codex.editor.delimiter": "^1.0.2",
     "codex.editor.header": "^2.1.2",
