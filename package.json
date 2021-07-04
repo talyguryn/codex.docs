@@ -12,7 +12,7 @@
     "@babel/polyfill": "^7.0.0",
     "body-parser": "latest",
     "cookie-parser": "~1.4.3",
-    "debug": "~4.1.0",
+    "debug": "~4.3.2",
     "express": "~4.16.0",
     "http-errors": "~1.7.1",
     "module-dispatcher": "^1.0.2",
